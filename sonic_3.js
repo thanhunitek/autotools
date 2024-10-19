@@ -1,4 +1,5 @@
 // Function to click the radio button after the page refresh
+var radioButtonSelector = 'button[role="radio"][value="3"]';
 function clickRadioButton() {
   return new Promise((resolve) => {
     var radioButton = document.querySelector(radioButtonSelector);
