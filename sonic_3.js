@@ -3,12 +3,12 @@ var radioButtonSelector = 'button[role="radio"][value="3"]';
 function clickRadioButton() {
   return new Promise((resolve) => {
     var radioButton = document.querySelector(radioButtonSelector);
-    if (radioButton && isClickable(radioButton)) {
+    if (radioButton) {
       radioButton.click();
       console.log("Radio button clicked!");
       resolve();
     } else {
-      console.log("Radio button not found or not clickable.");
+      console.log("Radio button not found.");
       resolve();  // Continue even if the radio button is not found
     }
   });
@@ -17,29 +17,56 @@ function clickRadioButton() {
 // CSS selector for the button in Step 1
 var buttonSelector = 'button[type="submit"].wr-bg-green-500.wr-h-12.wr-rounded-lg';  // Adjust the selector if necessary
 
-// Function to check if an element is clickable (not disabled)
-function isClickable(element) {
-  return !element.disabled && element.offsetParent !== null;  // Checks if it's enabled and visible
+// Function to check if the button is disabled
+function isDisabled(button) {
+  return button.disabled || button.classList.contains('disabled');
 }
 
-// Function to click the button after waiting for it to be clickable
+// Function to force click the button, removing the 'disabled' attribute
+function forceClickButton(button) {
+  // Remove disabled attribute and force click
+  if (isDisabled(button)) {
+    button.disabled = false;  // Remove the disabled property
+    button.classList.remove('disabled');  // In case 'disabled' is applied via class
+  }
+  
+  // Create a click event and dispatch it
+  const event = new MouseEvent('click', {
+    view: window,
+    bubbles: true,
+    cancelable: true
+  });
+
+  button.dispatchEvent(event);
+  console.log("Forced button click.");
+}
+
+// Function to wait until the button is clickable and then click
 function clickWhenClickable() {
   return new Promise((resolve) => {
     let interval = setInterval(() => {
       var button = document.querySelector(buttonSelector);
-      if (button && isClickable(button)) {
-        button.click();
-        console.log("Button clicked!");
-        clearInterval(interval);
-        resolve();
+      if (button) {
+        if (!isDisabled(button)) {
+          button.click();
+          console.log("Button clicked!");
+          clearInterval(interval);
+          resolve();
+        } else {
+          // If the button is disabled, force click it
+          console.log("Button is disabled, forcing click...");
+          forceClickButton(button);
+          clearInterval(interval);
+          resolve();
+        }
       } else {
-        console.log("Waiting for button to be clickable...");
+        console.log("Waiting for the button to appear...");
       }
     }, 1000);  // Check every 1 second if the button is clickable
   });
 }
 
-// Loop 20 times, waiting for the button to be clickable, then clicking it
+// Loop 20 times, waiting for the button to be clickable or forcing the click
 async function loopClicking() {
   for (let i = 0; i < 20; i++) {
     console.log(`Starting loop ${i + 1}`);
@@ -49,6 +76,6 @@ async function loopClicking() {
   console.log("Finished 20 loops.");
 }
 
-// Start the loop
+// Start the loop and radio button click
 clickRadioButton();
 loopClicking();
