@@ -28,7 +28,7 @@ function forceClickButton(button) {
     button.disabled = false;
     button.classList.remove('disabled');
   }
-  
+
   const event = new MouseEvent('click', {
     view: window,
     bubbles: true,
@@ -63,18 +63,19 @@ function clickWhenClickable() {
   });
 }
 
-// Function to check the status element for "20 / 20"
+// Function to check if the status element says "0 / 20"
 function isComplete() {
   var statusElement = document.querySelector('span.rounded-md.bg-white\\/10.px-2.py-1.font-bold.text-white');
   return statusElement && statusElement.textContent.trim() === "0 / 20";
 }
 
-// Loop until the status is "20 / 20"
+// Loop until the status is "0 / 20"
 async function loopClickingUntilComplete() {
-  while (isComplete()) {
-    console.log(`Starting loop ${i + 1}`);
+  while (!isComplete()) {
+    console.log("Starting a new loop iteration");
     await clickWhenClickable();  // Wait for the button to become clickable and click
-    await new Promise(resolve => setTimeout(resolve, 15000));  // Wait 10 seconds before the next iteration
+    await new Promise(resolve => setTimeout(resolve, 10000));  // Wait 10 seconds before the next iteration
+    
     if (isComplete()) {
       console.log("Status reached 0 / 20. Stopping the loop.");
       break;
