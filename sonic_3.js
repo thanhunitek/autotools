@@ -71,12 +71,10 @@ function isComplete() {
 
 // Loop until the status is "20 / 20"
 async function loopClickingUntilComplete() {
-  let i = 0;
-  while (i < 20 && !isComplete()) {
+  while (isComplete()) {
     console.log(`Starting loop ${i + 1}`);
     await clickWhenClickable();  // Wait for the button to become clickable and click
     await new Promise(resolve => setTimeout(resolve, 15000));  // Wait 10 seconds before the next iteration
-    i++;
     if (isComplete()) {
       console.log("Status reached 0 / 20. Stopping the loop.");
       break;
