@@ -24,13 +24,11 @@ function isDisabled(button) {
 
 // Function to force click the button, removing the 'disabled' attribute
 function forceClickButton(button) {
-  // Remove disabled attribute and force click
   if (isDisabled(button)) {
-    button.disabled = false;  // Remove the disabled property
-    button.classList.remove('disabled');  // In case 'disabled' is applied via class
+    button.disabled = false;
+    button.classList.remove('disabled');
   }
   
-  // Create a click event and dispatch it
   const event = new MouseEvent('click', {
     view: window,
     bubbles: true,
@@ -53,7 +51,6 @@ function clickWhenClickable() {
           clearInterval(interval);
           resolve();
         } else {
-          // If the button is disabled, force click it
           console.log("Button is disabled, forcing click...");
           forceClickButton(button);
           clearInterval(interval);
@@ -66,16 +63,28 @@ function clickWhenClickable() {
   });
 }
 
-// Loop 20 times, waiting for the button to be clickable or forcing the click
-async function loopClicking() {
-  for (let i = 0; i < 20; i++) {
+// Function to check the status element for "20 / 20"
+function isComplete() {
+  var statusElement = document.querySelector('span.rounded-md.bg-white\\/10.px-2.py-1.font-bold.text-white');
+  return statusElement && statusElement.textContent.trim() === "0 / 20";
+}
+
+// Loop until the status is "20 / 20"
+async function loopClickingUntilComplete() {
+  let i = 0;
+  while (i < 20 && !isComplete()) {
     console.log(`Starting loop ${i + 1}`);
     await clickWhenClickable();  // Wait for the button to become clickable and click
-    await new Promise(resolve => setTimeout(resolve, 10000));  // Wait 10 seconds before the next iteration
+    await new Promise(resolve => setTimeout(resolve, 15000));  // Wait 10 seconds before the next iteration
+    i++;
+    if (isComplete()) {
+      console.log("Status reached 0 / 20. Stopping the loop.");
+      break;
+    }
   }
-  console.log("Finished 20 loops.");
+  console.log("Finished loop.");
 }
 
 // Start the loop and radio button click
 clickRadioButton();
-loopClicking();
+loopClickingUntilComplete();
