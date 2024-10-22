@@ -74,7 +74,7 @@ async function loopClickingUntilComplete() {
   while (!isComplete()) {
     console.log("Starting a new loop iteration");
     await clickWhenClickable();  // Wait for the button to become clickable and click
-    await new Promise(resolve => setTimeout(resolve, 10000));  // Wait 10 seconds before the next iteration
+    await new Promise(resolve => setTimeout(resolve, 15000));  // Wait 10 seconds before the next iteration
     
     if (isComplete()) {
       console.log("Status reached 0 / 20. Stopping the loop.");
