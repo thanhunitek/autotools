@@ -1,34 +1,15 @@
-function clickElement(element) {
-  const event = new MouseEvent('click', {
-    view: window,
-    bubbles: true,
-    cancelable: true,
-  });
-  element.dispatchEvent(event);
-}
+document.querySelectorAll('div._accordian_base_container_1vd77_1').forEach(function(container) {
+    // Prevent links from opening in new tab
+    container.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default behavior of opening the link in a new tab
+            window.location.href = link.href; // Optionally navigate in the same tab
+        });
+    });
 
-window.addEventListener('beforeunload', function (event) {
-  event.preventDefault();
-  event.returnValue = '';
+    // Click all buttons that are meant to be clicked (like Verify button)
+    const verifyButton = container.querySelector('button[data-verify-button-status="idle"]');
+    if (verifyButton && !verifyButton.disabled) {
+        verifyButton.click(); // Simulate click on the button
+    }
 });
-
-const buttons = document.querySelectorAll('._task_trigger_container_1ds17_1');
-
-let counter = 0;
-let clicked = false;
-
-buttons.forEach((button) => {
-  clickElement(button);
-  counter++;
-  console.log(`The button has been clicked ${counter} time(s).`);
-
-  if (!clicked) {
-    clicked = true;
-  } else {
-    counter = 0;
-    clicked = false;
-  }
-});
-
-console.log('All buttons have been clicked.');
-alert('All tasks completed!');
