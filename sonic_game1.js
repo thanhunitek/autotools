@@ -36,7 +36,7 @@ function startProcess() {
     } else {
       enableAndClickElement();
     }
-  }, 15000);  // Check every 10 seconds
+  }, 35000);  // Check every 10 seconds
 }
 
 // Start the process
