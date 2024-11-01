@@ -63,10 +63,10 @@ function clickWhenClickable() {
   });
 }
 
-// Function to check if the status element says "0 / 20"
+// Function to check if the status element says "0 / 10"
 function isComplete() {
   var statusElement = document.querySelector('span.rounded-md.bg-white\\/10.px-2.py-1.font-bold.text-white');
-  return statusElement && statusElement.textContent.trim() === "0 / 20";
+  return statusElement && statusElement.textContent.trim() === "0 / 10";
 }
 
 // Loop until the status is "0 / 20"
@@ -77,7 +77,7 @@ async function loopClickingUntilComplete() {
     await new Promise(resolve => setTimeout(resolve, 15000));  // Wait 10 seconds before the next iteration
     
     if (isComplete()) {
-      console.log("Status reached 0 / 20. Stopping the loop.");
+      console.log("Status reached 0 / 10. Stopping the loop.");
       break;
     }
   }
