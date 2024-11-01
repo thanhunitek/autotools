@@ -20,10 +20,10 @@ function enableAndClickElement() {
   }
 }
 
-// Function to check if the element shows "0 / 20"
+// Function to check if the element shows "0 / 10"
 function isComplete() {
   var targetElement = document.querySelector('span.rounded-md.bg-white\\/10.px-2.py-1.font-bold.text-white');
-  return targetElement && targetElement.textContent.trim() === "0 / 20";
+  return targetElement && targetElement.textContent.trim() === "0 / 10";
 }
 
 // Function to handle the sequence of input and clicking
@@ -32,7 +32,7 @@ function startProcess() {
   let interval = setInterval(() => {
     if (isComplete()) {
       clearInterval(interval);
-      console.log("Process completed. Element shows 0 / 20.");
+      console.log("Process completed. Element shows 0 / 10.");
     } else {
       enableAndClickElement();
     }
